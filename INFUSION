@@ -1,0 +1,64 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+
+entity Infusion is
+    Port ( condicion : in std_logic_vector(1 downto 0);
+           velocidad : out integer);
+end Infusion;
+
+architecture Behavioral of Infusion is
+begin
+    process(condicion)
+        begin
+        case condicion is
+            when"00"=>velocidad<= 10;--normal
+            when"01"=>velocidad<= 20;-- leve
+            when"10"=>velocidad<= 30;-- moderado
+            when"11"=>velocidad<= 50;-- grave
+            when others => velocidad <=0;
+        end case;
+    end process;
+end Behavioral;
+
+
+//TB
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity tb_Infusion is           
+end tb_Infusion;
+
+architecture Behavioral of tb_Infusion is
+    component infusion is
+        Port (condicion : in STD_LOGIC_VECTOR(1 downto 0);
+              velocidad : out INTEGER);
+    end component;
+    
+signal condicion : STD_LOGIC_VECTOR(1 downto 0);--entrada
+signal velocidad : INTEGER;--salida
+begin
+    salida: infusion
+        Port map (condicion => condicion,
+                  velocidad => velocidad
+        );
+
+process
+begin
+condicion <="00";
+wait for 10ns;
+
+condicion <="01";
+wait for 10ns;
+
+condicion <="10";
+wait for 10ns;
+
+condicion <="11";
+wait;
+
+    end process;
+end Behavioral;
+
